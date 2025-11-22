@@ -1,0 +1,32 @@
+:root {
+  --height-header-wrapper: 64px;
+  --mobile-nav-height: 60px;
+}
+
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--height-header-wrapper);
+  z-index: 100;
+  border-bottom: 1px solid #ddd;
+}
+.container {
+  display: flex;
+  margin-top: var(--height-header-wrapper);
+  min-height: calc(100vh - var(--height-header-wrapper));
+  flex: 1;
+}
+.content {
+  flex: 1;
+  padding: 2rem;
+  box-sizing: border-box;
+}

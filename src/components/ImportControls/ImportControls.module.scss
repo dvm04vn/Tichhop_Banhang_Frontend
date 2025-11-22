@@ -1,0 +1,51 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.fileInput {
+    display: none;
+}
+
+.btn {
+    padding: 8px 14px;
+    background: #e0e0e0;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        background: #d4d4d4;
+    }
+}
+
+.importBtn {
+    background: #4caf50;
+    color: white;
+
+    &:hover {
+        background: #43a047;
+    }
+}
+
+.downloadBtn {
+    background: #2196f3;
+    color: white;
+
+    &:hover {
+        background: #1e88e5;
+    }
+}
+
+.selectedFile {
+    font-size: 14px;
+    color: #555;
+}

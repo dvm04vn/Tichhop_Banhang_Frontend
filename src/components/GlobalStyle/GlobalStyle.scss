@@ -1,0 +1,62 @@
+@import "normalize.css";
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+:root {
+  --white-color: #ffffff;
+  --black-color: #000000;
+  --Ebony-Clay: #1f2937;
+  --Alabaster: #f9f9f9;
+  --Alto: #dddddd;
+  --Amaranth: #e11d48;
+  --Athens-Gray: #e5e7eb;
+  --Boulder: #757575;
+  --Buttercup: #f1c40f;
+  --Catskill-White: #f1f5f9;
+  --Cinnabar: #e74c3c;
+  --Cod-Gray: #111111;
+  --Dove-Gray: #666666;
+  --Ebony: #0f172a;
+  --Gallery: #eeeeee;
+  --Gull-Gray: #94a3b8;
+  --Flamingo: #ef4444;
+  --Mine-Shaft: #222222;
+  --Mountain-Meadow: #1abc9c;
+  --header-height: 5.4rem;
+  --max-width-content: 80%;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+button,
+a,
+input {
+  border: none;
+  outline: none;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: none;
+  list-style: none;
+}
+li,
+ul,
+ol {
+  border: none;
+  outline: none;
+  text-decoration: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100%;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+
+}
