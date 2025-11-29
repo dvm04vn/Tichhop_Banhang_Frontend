@@ -10,18 +10,9 @@
   flex-direction: column;
   position: relative;
 }
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: var(--height-header-wrapper);
-  z-index: 100;
-  border-bottom: 1px solid #ddd;
-}
+
 .container {
   display: flex;
-  margin-top: var(--height-header-wrapper);
   min-height: calc(100vh - var(--height-header-wrapper));
   flex: 1;
 }

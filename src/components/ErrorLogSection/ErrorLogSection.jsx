@@ -1,119 +1,69 @@
-import styles from "./ErrorLogSection.module.scss";
+import React, { memo } from "react";
 import classNames from "classnames/bind";
+import Button from "~/components/Button";
+import styles from "./ErrorLogSection.module.scss";
 
 const cx = classNames.bind(styles);
 
-const ErrorLogSection = ({ errors = [], total, onExportLog, onClear }) => {
-  const count = typeof total === "number" ? total : errors.length;
-
-  const handleExportLog = () => {
-    if (onExportLog) onExportLog();
-  };
-
-  const handleClear = () => {
-    if (onClear) onClear();
-  };
-
-  const formatTime = (value) => {
-    if (!value) return "";
-    try {
-      const d = typeof value === "string" ? new Date(value) : value;
-      return d.toLocaleString("vi-VN");
-    } catch {
-      return "";
-    }
-  };
-
+function ErrorLogSection({ logs, onExportLog }) {
   return (
-    <section className={cx("wrapper")}>
+    <section className={cx("wapper")}>
       <header className={cx("header")}>
-        <div className={cx("headerLeft")}>
+        <div className={cx("left")}>
+          <span className={cx("icon")}>!</span>
           <h2 className={cx("title")}>Dữ liệu lỗi / Log</h2>
-          <p className={cx("subtitle")}>
-            Errors: <span className={cx("badge")}>{count}</span>
-          </p>
         </div>
-
-        <div className={cx("headerRight")}>
-          {onExportLog && (
-            <button
-              type="button"
-              className={cx("btn", "btnExport")}
-              onClick={handleExportLog}
-            >
-              Xuất Log
-            </button>
-          )}
-          {onClear && (
-            <button
-              type="button"
-              className={cx("btn", "btnClear")}
-              onClick={handleClear}
-            >
-              Clear
-            </button>
-          )}
-        </div>
+        <Button
+          type="button"
+          className={cx("secondaryBtn")}
+          onClick={onExportLog}
+        >
+          Xuất Log
+        </Button>
       </header>
 
-      {errors.length === 0 ? (
-        <div className={cx("emptyState")}>
-          Không có lỗi nào. File CSV hiện tại đã được xử lý hợp lệ.
-        </div>
-      ) : (
-        <div className={cx("list")}>
-          {errors.map((log, idx) => {
-            const lineNumber =
-              log.lineNumber ??
-              (typeof log.index === "number" ? log.index + 1 : undefined);
+      <div className={cx("list")}>
+        {logs.map((log) => (
+          <ErrorLogItem key={log.id} log={log} />
+        ))}
+        {logs.length === 0 && (
+          <p className={cx("empty")}>Không có lỗi nào được ghi nhận.</p>
+        )}
+      </div>
 
-            const productName = log.productName || "Không rõ sản phẩm";
-
-            const key = log.id ?? `${log.index ?? idx}-${log.field ?? "err"}`;
-
-            return (
-              <div key={key} className={cx("item")}>
-                <div className={cx("itemHeader")}>
-                  <div className={cx("lineInfo")}>
-                    {typeof lineNumber === "number" && (
-                      <span className={cx("lineTag")}>Dòng {lineNumber}</span>
-                    )}
-                    <span className={cx("productName")}>{productName}</span>
-                  </div>
-
-                  {log.createdAt && (
-                    <span className={cx("time")}>
-                      {formatTime(log.createdAt)}
-                    </span>
-                  )}
-                </div>
-
-                <div className={cx("itemBody")}>
-                  {log.fileName && (
-                    <div className={cx("meta")}>
-                      <span className={cx("label")}>Cột:</span>
-                      <span className={cx("value")}>{log.fileName}</span>
-                    </div>
-                  )}
-
-                  {log.field && (
-                    <div className={cx("meta")}>
-                      <span className={cx("label")}>Field:</span>
-                      <span className={cx("value")}>{log.field}</span>
-                    </div>
-                  )}
-
-                  {log.message && (
-                    <div className={cx("message")}>{log.message}</div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <p className={cx("note")}>
+        Các bản ghi lỗi sẽ hiển thị chi tiết nguyên nhân để người dùng chỉnh sửa
+        file CSV.
+      </p>
     </section>
   );
-};
+}
 
-export default ErrorLogSection;
+function ErrorLogItem({ log }) {
+  const date = new Date(log.createdAt);
+
+  return (
+    <article className={cx("item")}>
+      <span className={cx("errBadge")}>ERR</span>
+      <div className={cx("itemBody")}>
+        <div className={cx("itemHeader")}>
+          <div className={cx("itemTitle")}>
+            {log.sku && <span>{log.sku}</span>}
+            <span className={cx("itemLine")}>— Dòng {log.row}</span>
+          </div>
+          <div className={cx("itemTime")}>
+            {date.toLocaleDateString("vi-VN")}{" "}
+            {date.toLocaleTimeString("vi-VN")}
+          </div>
+        </div>
+        {log.productName && (
+          <p className={cx("itemProduct")}>{log.productName}</p>
+        )}
+        <p className={cx("itemMessage")}>{log.message}</p>
+        <p className={cx("itemFile")}>File: {log.fileName}</p>
+      </div>
+    </article>
+  );
+}
+
+export default memo(ErrorLogSection);

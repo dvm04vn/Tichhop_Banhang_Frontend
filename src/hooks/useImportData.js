@@ -1,134 +1,86 @@
-import { useState } from "react";
-import { MOCK_IMPORT_RESPONSE } from "~/data/mockImportResponse";
+import { useCallback, useEffect, useState } from "react";
+import { mapEtlResponseToSessionUI } from "~/hooks/mapEtlToImportSession";
+import {
+  // getEtlJob,
+  exportAllCsv,
+  exportImportedCsv,
+  exportErrorLog,
+  downloadTemplateCsv,
+} from "~/services/etl.service";
+import { mockEtlResponse } from "~/data/mockImportResponse";
 
-export default function useImportData() {
-  const [importedRows, setImportedRows] = useState([]);
-  const [errorLogs, setErrorLogs] = useState([]);
+export function useImportData(initialJobId) {
+  const [session, setSession] = useState(null);
+  const [jobId, setJobId] = useState(initialJobId || null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(/** @type {Error|null} */ (null));
 
-  // Khi bấm Import, tạm thời mình bỏ qua "file" và dùng mock luôn
-  const handleImport = async () => {
+  const fetchData = useCallback(async (id) => {
+    if (!id) return;
     try {
       setLoading(true);
+      setError(null);
 
-      const payload = MOCK_IMPORT_RESPONSE;
+      // TODO: dùng backend thật => bỏ comment dòng dưới và comment dòng mock.
+      // const res = await getEtlJob(id);
+      const res = mockEtlResponse;
 
-      const successRows = payload.filter((r) => r.isValid);
-      const errorRows = payload.filter((r) => !r.isValid);
-
-      // Map imported
-      const mappedImported = successRows.map((row, idx) => {
-        const v = row.validatedData || {};
-        const index = typeof row.current === "number" ? row.current : idx;
-
-        return {
-          index,
-          nameProduct: v.nameProduct,
-          nameCategories: v.nameCategories,
-          price: v.price,
-          stock: v.stock,
-          sold: v.sold,
-          color: v.color,
-          size: v.size,
-          weight: v.weight,
-          unit: v.unit,
-          sku: v.sku,
-          brand: v.brand,
-          description: v.description,
-          status:
-            typeof v.stock === "number" && v.stock > 0
-              ? "Còn hàng"
-              : "Hết hàng",
-        };
-      });
-
-      // Map errors
-      const mappedErrors = errorRows.flatMap((row, idx) => {
-        const rowErrors = Array.isArray(row.errors) ? row.errors : [];
-        const baseIndex =
-          typeof row.current === "number" ? row.current : idx;
-
-        const productName =
-          row.validatedData?.nameProduct ||
-          row.rowData?.["tên sản phẩm"] ||
-          "Không rõ sản phẩm";
-
-        if (rowErrors.length === 0) {
-          return [
-            {
-              id: `${baseIndex}-unknown`,
-              index: baseIndex,
-              lineNumber: baseIndex + 2,
-              productName,
-              message: "Lỗi không xác định",
-              field: "",
-              fileName: "",
-              createdAt: new Date().toISOString(),
-            },
-          ];
-        }
-
-        return rowErrors.map((err, errorIdx) => ({
-          id: `${baseIndex}-${errorIdx}-${err.field || "field"}`,
-          index: baseIndex,
-          lineNumber: baseIndex + 2,
-          productName,
-          field: err.field,
-          fileName: err.fileName,
-          message: err.errorMessage,
-          createdAt: new Date().toISOString(),
-        }));
-      });
-
-      setImportedRows(mappedImported);
-      setErrorLogs(mappedErrors);
+      const mapped = mapEtlResponseToSessionUI(res);
+      setSession(mapped);
+    } catch (err) {
+      console.error("[useImportData] fetchData error:", err);
+      setError(/** @type {Error} */ (err));
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const clearImported = () => setImportedRows([]);
-  const clearErrors = () => setErrorLogs([]);
-  const clearAll = () => {
-    clearImported();
-    clearErrors();
-  };
+  useEffect(() => {
+    if (jobId) {
+      fetchData(jobId);
+    }
+  }, [jobId, fetchData]);
 
-  const exportImported = () => {
-    console.log("Fake export imported:", importedRows);
-    alert("Fake export imported (log ra console) 😆");
-  };
+  const refresh = useCallback(() => {
+    if (jobId) {
+      fetchData(jobId);
+    }
+  }, [jobId, fetchData]);
 
-  const exportErrorLog = () => {
-    console.log("Fake export error logs:", errorLogs);
-    alert("Fake export error log (log ra console) 😆");
-  };
+  const clearSession = useCallback(() => {
+    setSession(null);
+  }, []);
 
-  const downloadTemplate = () => {
-    alert("Fake download template – chưa nối backend.");
-  };
+  const handleExportAll = useCallback(() => {
+    if (!jobId) return;
+    exportAllCsv(jobId);
+  }, [jobId]);
 
-  const totalImported = importedRows.length;
-  const totalErrors = errorLogs.length;
+  const handleExportImported = useCallback(() => {
+    if (!jobId) return;
+    exportImportedCsv(jobId);
+  }, [jobId]);
+
+  const handleExportLog = useCallback(() => {
+    if (!jobId) return;
+    exportErrorLog(jobId);
+  }, [jobId]);
+
+  const handleDownloadTemplate = useCallback(() => {
+    downloadTemplateCsv();
+  }, []);
 
   return {
-    importedRows,
-    errorLogs,
-    totalImported,
-    totalErrors,
+    jobId,
+    setJobId,
+    session,
     loading,
-    handleImport,
-    exportImported,
-    exportErrorLog,
-    clearImported,
-    clearErrors,
-    downloadTemplate,
-
-    // giữ interface cũ cho Home/ImportControls
-    imported: importedRows,
-    errors: errorLogs,
-    uploadFile: handleImport,
-    exportCSV: exportImported,
-    clearAll,
+    error,
+    refresh,
+    clearSession,
+    exportAll: handleExportAll,
+    exportImported: handleExportImported,
+    exportLog: handleExportLog,
+    downloadTemplate: handleDownloadTemplate,
   };
 }

@@ -4,6 +4,7 @@
 :root {
   --white-color: #ffffff;
   --black-color: #000000;
+
   --Ebony-Clay: #1f2937;
   --Alabaster: #f9f9f9;
   --Alto: #dddddd;
@@ -21,19 +22,28 @@
   --Flamingo: #ef4444;
   --Mine-Shaft: #222222;
   --Mountain-Meadow: #1abc9c;
+
+  /* layout token */
   --header-height: 5.4rem;
   --max-width-content: 80%;
+
+  /* thêm cho phù hợp layout hiện tại */
+  --page-bg: #f5f5f7; /* nền xám nhạt giống Figma */
+  --text-primary: #111827; /* màu chữ chính */
 }
 
 html {
   font-size: 62.5%;
 }
 
-* {
+*,
+*::before,
+*::after {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
+
 button,
 a,
 input {
@@ -42,8 +52,8 @@ input {
   text-decoration: none;
   color: var(--text-primary);
   background: none;
-  list-style: none;
 }
+
 li,
 ul,
 ol {
@@ -54,9 +64,13 @@ ol {
   margin: 0;
   padding: 0;
 }
+
 body {
   width: 100%;
   height: 100%;
   font-family: "Roboto", sans-serif;
-
+  font-size: 1.4rem;
+  line-height: 1.5;
+  background-color: var(--page-bg);
+  color: var(--text-primary);
 }

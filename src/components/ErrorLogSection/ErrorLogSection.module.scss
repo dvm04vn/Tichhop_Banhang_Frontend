@@ -1,240 +1,196 @@
-
-.wrapper {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 16px 18px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+.wapper {
+  background-color: var(--white-color);
+  border-radius: 16px;
+  padding: 16px 18px 18px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 260px;
 }
 
-/* Header */
+/* ===========================
+   Header
+   =========================== */
+
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  margin-bottom: 12px;
 }
 
-.headerLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #111827;
-}
-
-.subtitle {
-  font-size: 13px;
-  color: #6b7280;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  background: #fef2f2;
-  color: #b91c1c;
-}
-
-.headerRight {
+.left {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Base button */
-.btn {
-  border: none;
-  outline: none;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+.icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  background-color: #fef3c7;
+  color: #f59e0b;
+  font-size: 1.4rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--Ebony-Clay);
+}
+
+/* nút Xuất Log */
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 12px;
+  min-height: 32px;
+  border-radius: 999px;
+
+  background-color: var(--white-color);
+  border: 1px solid var(--Athens-Gray);
+  color: var(--Ebony-Clay);
+
+  font-size: 1.2rem;
+  font-weight: 500;
   white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.05s ease;
+
+  &:hover {
+    background-color: var(--Catskill-White);
+    border-color: #cbd5f5;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+  }
 
   &:active {
     transform: translateY(1px);
-    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
   }
 }
 
-.btnExport {
-  background: #eff6ff;
-  color: #1d4ed8;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.18);
+/* ===========================
+   List & empty state
+   =========================== */
 
-  &:hover {
-    background: #dbeafe;
-  }
-}
-
-.btnClear {
-  background: #fee2e2;
-  color: #b91c1c;
-  box-shadow: 0 2px 8px rgba(248, 113, 113, 0.25);
-
-  &:hover {
-    background: #fecaca;
-  }
-}
-
-/* Empty state */
-.emptyState {
-  border-radius: 10px;
-  padding: 12px 14px;
-  background: #f9fafb;
-  font-size: 13px;
-  color: #4b5563;
-  border: 1px dashed #d1d5db;
-}
-
-/* List of log items */
 .list {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-height: 420px;
-  overflow-y: auto;
-  padding-right: 4px;
+  margin-top: 4px;
 }
 
-/* từng log item */
+.empty {
+  font-size: 1.3rem;
+  color: var(--Gull-Gray);
+  padding: 8px 0;
+}
+
+/* ===========================
+   Note dưới card
+   =========================== */
+
+.note {
+  margin-top: 16px;
+  font-size: 1.2rem;
+  color: var(--Gull-Gray);
+}
+
+/* ===========================
+   Error item
+   =========================== */
+
 .item {
-  border-radius: 10px;
-  border: 1px solid #fee2e2;
-  background: #fef2f2;
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+
   padding: 10px 12px;
+  border-radius: 12px;
+  background-color: #fef2f2;
+  border: 1px solid rgba(248, 113, 113, 0.35);
+}
+
+.errBadge {
+  align-self: flex-start;
+
+  min-width: 40px;
+  height: 24px;
+  padding: 0 8px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 999px;
+  background-color: #ef4444;
+  color: var(--white-color);
+
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* phần bên phải của log item */
+.itemBody {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
-/* header trong log item */
+/* header: sku + dòng + thời gian */
 .itemHeader {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
 }
 
-.lineInfo {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-}
-
-.lineTag {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: #fee2e2;
-  color: #b91c1c;
-}
-
-.productName {
-  font-size: 13px;
-  font-weight: 600;
-  color: #111827;
-}
-
-.time {
-  font-size: 11px;
-  color: #6b7280;
-}
-
-/* body trong log item */
-.itemBody {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.meta {
+.itemTitle {
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 12px;
+  font-size: 1.25rem;
+  color: var(--Ebony-Clay);
+  font-weight: 500;
 }
 
-.label {
-  font-weight: 600;
-  color: #374151;
+.itemLine {
+  color: var(--Dove-Gray);
 }
 
-.value {
-  color: #111827;
+.itemTime {
+  font-size: 1.1rem;
+  color: var(--Gull-Gray);
+  white-space: nowrap;
 }
 
-.message {
-  margin-top: 2px;
-  font-size: 12px;
-  color: #b91c1c;
+/* chi tiết nội dung */
+.itemProduct {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: var(--Ebony-Clay);
 }
 
-/* Scrollbar nhẹ cho list */
-.list::-webkit-scrollbar {
-  width: 6px;
+.itemMessage {
+  font-size: 1.2rem;
+  color: var(--Flamingo);
 }
 
-.list::-webkit-scrollbar-thumb {
-  background: #e5e7eb;
-  border-radius: 999px;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .wrapper {
-    padding: 12px 14px;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .headerRight {
-    width: 100%;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-}
-
-@media (max-width: 640px) {
-  .wrapper {
-    padding: 10px 12px;
-  }
-
-  .item {
-    padding: 8px 10px;
-  }
-
-  .productName {
-    font-size: 12px;
-  }
-
-  .message {
-    font-size: 11px;
-  }
+.itemFile {
+  font-size: 1.15rem;
+  color: var(--Gull-Gray);
 }

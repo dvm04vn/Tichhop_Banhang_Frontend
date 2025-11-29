@@ -1,121 +1,109 @@
-/* src/pages/Home/Home.module.scss */
-
-.page {
-  min-height: 100vh;
-  padding: 24px 32px;
-  box-sizing: border-box;
-  background: #f5f5f7;
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.pageTitle {
-  font-size: 20px;
+/* ===========================
+   Page title
+   =========================== */
+
+.title {
+  font-size: 2.4rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--Ebony-Clay);
   margin-bottom: 12px;
 }
 
-/* Khung lớn có viền xanh bao hết nội dung */
-.frame {
+/* ===========================
+   ETL main card
+   =========================== */
+
+.etlCard {
+  width: 100%;
+  background-color: var(--white-color);
   border-radius: 16px;
-  border: 2px solid #4072de; /* xanh lam */
-  background: #f9fafb;
-  padding: 20px 24px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  padding: 24px 24px 28px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(148, 163, 184, 0.25);
 }
 
-/* Hàng trên cùng: ETL info + ImportControls */
-.topRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
-
-/* Cụm ETL bên trái */
-.etlInfo {
+/* Header: badge + title + subtitle */
+.etlHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
+/* Badge ETL gradient */
 .etlBadge {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #4f46e5, #6366f1);
-  color: #ffffff;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-  font-size: 14px;
-}
 
-.etlText {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
+  min-width: 48px;
+  height: 36px;
+  padding: 0 14px;
 
-.etlTitle {
-  font-size: 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: var(--white-color);
   font-weight: 600;
-  color: #111827;
+  font-size: 1.4rem;
+  letter-spacing: 0.03em;
+}
+
+/* Title + subtitle trong header */
+.etlTitle {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--Ebony-Clay);
+  margin-bottom: 4px;
 }
 
 .etlSubtitle {
-  font-size: 12px;
-  color: #6b7280;
+  font-size: 1.3rem;
+  color: var(--Gull-Gray);
 }
 
-/* Khu ImportControls bên phải */
-.etlActions {
-  min-width: 320px;
+/* ===========================
+   Loading / error state text
+   =========================== */
+
+.stateText {
+  margin-top: 12px;
+  font-size: 1.3rem;
+  color: var(--Boulder);
 }
 
-/* 2 card chính: Imported & Error log */
-.content {
+.stateError {
+  margin-top: 12px;
+  font-size: 1.3rem;
+  color: var(--Flamingo);
+}
+
+/* ===========================
+   Main content grid
+   =========================== */
+
+.contentGrid {
   display: grid;
-  grid-template-columns: 2fr 1.1fr;
-  gap: 16px;
-}
+  grid-template-columns: 2fr 1.2fr;
+  gap: 24px;
+  margin-top: 16px;
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .page {
-    padding: 16px;
-  }
-
-  .frame {
-    padding: 16px;
-  }
-
-  .topRow {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .etlActions {
-    width: 100%;
-  }
-
-  .content {
+  @media (max-width: 1024px) {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  .page {
-    padding: 12px;
-  }
+/* ===========================
+   Note text dưới card
+   =========================== */
 
-  .frame {
-    padding: 12px;
-  }
-
-  .etlTitle {
-    font-size: 16px;
-  }
+.note {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  color: var(--Gull-Gray);
 }

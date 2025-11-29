@@ -1,114 +1,97 @@
-import styles from "./ImportedSection.module.scss";
+import React, { memo } from "react";
 import classNames from "classnames/bind";
+
+import Button from "~/components/Button";
+
+import styles from "./ImportedSection.module.scss";
 
 const cx = classNames.bind(styles);
 
-const ImportedSection = ({ data = [], total, onExport, onClear }) => {
-  const rowCount = typeof total === "number" ? total : data.length;
-
-  const handleExport = () => {
-    if (onExport) onExport();
-  };
-
-  const handleClear = () => {
-    if (onClear) onClear();
-  };
-
+function ImportedSection({ summary, rows, onExportImported, onClear }) {
   return (
-    <section className={cx("wrapper")}>
+    <section className={cx("wapper")}>
       <header className={cx("header")}>
-        <div className={cx("headerLeft")}>
-          <h2 className={cx("title")}>Dữ liệu đã nhập (Imported)</h2>
-          <p className={cx("subtitle")}>
-            Imported: <span className={cx("badge")}>{rowCount}</span>
-          </p>
+        <div className={cx("left")}>
+          <span className={cx("icon")}>✓</span>
+          <div>
+            <h2 className={cx("title")}>Dữ liệu đã nhập (Imported)</h2>
+            <p className={cx("summary")}>
+              Records: {summary.totalRecords} • Errors: {summary.totalErrors}
+            </p>
+          </div>
         </div>
 
-        <div className={cx("headerRight")}>
-          {onExport && (
-            <button
-              type="button"
-              className={cx("btn", "btnExport")}
-              onClick={handleExport}
-            >
-              Xuất Imported
-            </button>
-          )}
-          {onClear && (
-            <button
-              type="button"
-              className={cx("btn", "btnClear")}
-              onClick={handleClear}
-            >
-              Clear
-            </button>
-          )}
+        <div className={cx("actions")}>
+          <Button
+            type="button"
+            className={cx("secondaryBtn")}
+            onClick={onExportImported}
+          >
+            Xuất Imported
+          </Button>
+          <Button type="button" className={cx("dangerBtn")} onClick={onClear}>
+            Clear
+          </Button>
         </div>
       </header>
 
-      {data.length === 0 ? (
-        <div className={cx("emptyState")}>
-          Chưa có dữ liệu imported. Hãy chọn file CSV và nhấn <b>Import</b>.
-        </div>
-      ) : (
-        <div className={cx("tableWrapper")}>
-          <table className={cx("table")}>
-            <thead>
+      {/* Table */}
+      <div className={cx("tableWrapper")}>
+        <table className={cx("table")}>
+          <thead>
+            <tr>
+              <th>Mã hàng (SKU)</th>
+              <th>Tên sản phẩm</th>
+              <th>Danh mục</th>
+              <th className={cx("textRight")}>Tồn kho</th>
+              <th className={cx("textRight")}>Đã bán</th>
+              <th className={cx("textRight")}>Giá</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <ImportedRowItem key={row.id} row={row} />
+            ))}
+
+            {rows.length === 0 && (
               <tr>
-                <th>STT</th>
-                <th>Mã hàng</th>
-                <th>Tên sản phẩm</th>
-                <th>Danh mục</th>
-                <th>Tồn kho</th>
-                <th>Đã bán</th>
-                <th>Giá</th>
-                <th>Màu sắc</th>
-                <th>Kích thước</th>
-                <th>Thương hiệu</th>
-                <th>Trạng thái</th>
+                <td colSpan={7} className={cx("empty")}>
+                  Chưa có dữ liệu imported
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {data.map((row, idx) => {
-                const status =
-                  row.status ??
-                  (typeof row.stock === "number" && row.stock > 0
-                    ? "Còn hàng"
-                    : "Hết hàng");
-
-                const statusClass =
-                  status === "Còn hàng" ? "statusInStock" : "statusOutOfStock";
-
-                return (
-                  <tr key={row.index ?? row.sku ?? idx}>
-                    <td>{idx + 1}</td>
-                    <td>{row.sku}</td>
-                    <td>{row.nameProduct}</td>
-                    <td>{row.nameCategories}</td>
-                    <td>{row.stock}</td>
-                    <td>{row.sold}</td>
-                    <td>
-                      {typeof row.price === "number"
-                        ? row.price.toLocaleString("vi-VN")
-                        : row.price}
-                    </td>
-                    <td>{row.color}</td>
-                    <td>{row.size}</td>
-                    <td>{row.brand}</td>
-                    <td>
-                      <span className={cx("status", statusClass)}>
-                        {status}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
+            )}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
-};
+}
 
-export default ImportedSection;
+function ImportedRowItem({ row }) {
+  const statusLabel = row.status === "in_stock" ? "Còn hàng" : "Hết hàng";
+
+  return (
+    <tr>
+      <td>{row.sku}</td>
+      <td>{row.productName}</td>
+      <td>{row.categoryName}</td>
+      <td className={cx("textRight")}>{row.stock}</td>
+      <td className={cx("textRight")}>{row.sold}</td>
+      <td className={cx("textRight")}>{row.price.toLocaleString("vi-VN")}</td>
+      <td>
+        <span
+          className={
+            row.status === "in_stock"
+              ? cx("statusInStock")
+              : cx("statusOutStock")
+          }
+        >
+          {statusLabel}
+        </span>
+      </td>
+    </tr>
+  );
+}
+
+export default memo(ImportedSection);
