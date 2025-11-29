@@ -1,11 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import styles from "./Home.module.scss";
 import classNames from "classnames/bind";
 
 import ImportControls from "~/components/ImportControls";
 import ImportedSection from "~/components/ImportedSection";
 import ErrorLogSection from "~/components/ErrorLogSection";
+import ImportModal from "~/components/ImportModal";
 import { useImportData } from "~/hooks/useImportData";
+// import { uploadImportFiles } from "~/services/etl.service";
 
 const cx = classNames.bind(styles);
 const DEMO_JOB_ID = "019aca05-a654-7187-b6c3-401f72eed3ba";
@@ -23,9 +25,42 @@ function Home() {
     downloadTemplate,
   } = useImportData(DEMO_JOB_ID);
 
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
   const handleRefresh = useCallback(() => {
     refresh();
   }, [refresh]);
+
+  const handleOpenImportModal = useCallback(() => {
+    setIsImportModalOpen(true);
+  }, []);
+
+  const handleCloseImportModal = useCallback(() => {
+    if (uploading) return;
+    setIsImportModalOpen(false);
+  }, [uploading]);
+
+  // FE-only: chỉ log số file, không gọi backend
+  const handleUploadFiles = useCallback(async (files) => {
+    if (!files || !files.length) return;
+
+    try {
+      setUploading(true);
+
+      console.log(
+        "[Home] FE-only Import CSV, số file đã chọn:",
+        files.length,
+        files
+      );
+      // Nếu muốn, sau này có thể parse CSV ở đây để test UI thêm
+    } catch (err) {
+      console.error("[Home] upload files error (FE-only):", err);
+    } finally {
+      setUploading(false);
+      setIsImportModalOpen(false);
+    }
+  }, []);
 
   return (
     <div className={cx("wrapper")}>
@@ -46,6 +81,7 @@ function Home() {
           onDownloadTemplate={downloadTemplate}
           onExportAll={exportAll}
           onRefresh={handleRefresh}
+          onOpenImportModal={handleOpenImportModal}
         />
 
         {loading && (
@@ -77,6 +113,14 @@ function Home() {
           API để CRUD dữ liệu thực và thay jobId demo bằng jobId thực tế.
         </p>
       </section>
+
+      {/* Modal import CSV */}
+      <ImportModal
+        open={isImportModalOpen}
+        onClose={handleCloseImportModal}
+        onUpload={handleUploadFiles}
+        uploading={uploading}
+      />
     </div>
   );
 }

@@ -1,0 +1,267 @@
+:root {
+  --modal-radius: 16px;
+  --border: 1px solid var(--Athens-Gray, #e5e7eb);
+  --shadow-xl: 0 10px 25px rgba(0, 0, 0, 0.12);
+  --bg-soft: var(--Catskill-White, #f1f5f9);
+  --bg-white: var(--white-color, #fff);
+  --text-muted: var(--Gull-Gray, #94a3b8);
+  --text-strong: var(--Ebony-Clay, #1f2937);
+  --primary: #3b82f6;
+  --danger: #ef4444;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  width: min(680px, 92vw);
+  max-height: 80vh;
+  background: var(--bg-white);
+  border-radius: var(--modal-radius);
+  box-shadow: var(--shadow-xl);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: var(--border);
+  background: var(--bg-white);
+}
+
+.title {
+  font-size: 1.7rem;
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--text-strong);
+  letter-spacing: 0.2px;
+}
+
+.close {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: var(--bg-soft);
+    color: var(--text-strong);
+  }
+}
+
+/* Body */
+.body {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* Dropzone */
+.dropzone {
+  border: 2px dashed var(--Athens-Gray, #e5e7eb);
+  background: var(--bg-soft);
+  border-radius: 12px;
+  padding: 22px;
+  text-align: center;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease;
+
+  &.dragOver {
+    border-color: var(--primary);
+    background: #eff6ff;
+  }
+}
+
+.fileInput {
+  display: none;
+}
+
+/* Buttons inside module (Button component đã style sẵn, chỉ thêm spacing) */
+.secondaryBtn {
+  margin-top: 8px;
+}
+
+/* Alerts */
+.alert {
+  margin-top: 12px;
+  background: #fff7f7;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.alertList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.alertItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px dashed rgba(185, 28, 28, 0.2);
+  }
+}
+
+.alertClose {
+  border: none;
+  background: transparent;
+  color: #b91c1c;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 6px;
+  width: 28px;
+  height: 28px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+
+  &:hover {
+    background: rgba(185, 28, 28, 0.08);
+  }
+}
+
+/* File list */
+.listWrap {
+  margin-top: 14px;
+}
+
+.listHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-strong);
+  font-weight: 600;
+  padding: 0 2px;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.fileList {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 220px;
+  overflow-y: auto;
+  border: var(--border);
+  border-radius: 10px;
+  background: var(--bg-white);
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  }
+}
+
+.fileMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fileIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.fileText {
+  display: flex;
+  flex-direction: column;
+}
+
+.fileName {
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.fileSize {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+}
+
+.remove {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: var(--bg-soft);
+    color: var(--danger);
+  }
+}
+
+.listActions {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Footer */
+.footer {
+  padding: 12px 16px;
+  border-top: var(--border);
+  background: var(--bg-white);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .modal {
+    width: 96vw;
+    max-height: 86vh;
+  }
+
+  .body {
+    padding: 12px;
+  }
+}
